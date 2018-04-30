@@ -5,7 +5,13 @@
  */
 package student_attendance_admin_application_client;
 
+import EntityPackage.Department;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.border.EtchedBorder;
 
 
@@ -14,15 +20,56 @@ import javax.swing.border.EtchedBorder;
  * @author admin
  */
 public class DepartmentGUI extends javax.swing.JPanel {
-    
+    ArrayList<Department> arrDeptList;
     /**
      * Creates new form DepartmentGUI
      */
     public DepartmentGUI() {
         initComponents();
         setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        jtxtDeptId.setEditable(false);
+        jtxtDeptName.setEditable(false);
+        jtxtDeptAbbr.setEditable(false);
+        jbtnSave.setEnabled(false);
+        jbtnDeleteCancel.setEnabled(false);
+        loadDepartmentList();
     }
 
+    public void loadDepartmentList()
+    {
+        try
+        {
+            Thread t=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        
+                        Socket sock=new Socket("127.0.0.1",9898);
+                        ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
+                        ObjectOutputStream outputToServer=new ObjectOutputStream(sock.getOutputStream());
+                        outputToServer.writeUTF("LOAD_DEPARTMENT_LIST_REQUEST");
+                        outputToServer.flush();
+                        arrDeptList=(ArrayList<Department>)inputFromServer.readObject();
+                        DefaultListModel<String> listModel=new DefaultListModel<>();
+                        for(int i=0;i<arrDeptList.size();i++)
+                        {
+                            listModel.addElement(arrDeptList.get(i).DeptName);
+                        }
+                        jlistDepartment.setModel(listModel);
+                    }
+                    catch(Exception e)
+                    {
+                            e.printStackTrace();
+                    }
+                }
+            });
+            t.start();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,29 +80,330 @@ public class DepartmentGUI extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jlistDepartment = new javax.swing.JList<>();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jtxtDeptId = new javax.swing.JTextField();
+        jtxtDeptName = new javax.swing.JTextField();
+        jtxtDeptAbbr = new javax.swing.JTextField();
+        jbtnCreate = new javax.swing.JButton();
+        jbtnDeleteCancel = new javax.swing.JButton();
+        jbtnSave = new javax.swing.JButton();
 
         jLabel1.setText("Add, Remove or Update Department");
+
+        jlistDepartment.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jlistDepartmentValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jlistDepartment);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel2.setText("Details :");
+
+        jLabel3.setText("Department Id :");
+
+        jLabel4.setText("Department Name :");
+
+        jLabel5.setText("Department Abbreviation :");
+
+        jbtnCreate.setText("Create New Department");
+        jbtnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnCreateActionPerformed(evt);
+            }
+        });
+
+        jbtnDeleteCancel.setText("Delete");
+        jbtnDeleteCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnDeleteCancelActionPerformed(evt);
+            }
+        });
+
+        jbtnSave.setText("Save Changes");
+        jbtnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnSaveActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(49, 49, 49)
+                                .addComponent(jbtnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jtxtDeptId)
+                                    .addComponent(jtxtDeptName)
+                                    .addComponent(jtxtDeptAbbr, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(jbtnDeleteCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(126, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jtxtDeptId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jtxtDeptName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jtxtDeptAbbr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnDeleteCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1)
-                .addContainerGap(204, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(275, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jlistDepartmentValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jlistDepartmentValueChanged
+        // TODO add your handling code here:
+        if(jlistDepartment.getSelectedIndex()!=-1)
+        {
+        jtxtDeptId.setText(""+ arrDeptList.get(jlistDepartment.getSelectedIndex()).DeptId);
+        jtxtDeptName.setText(arrDeptList.get(jlistDepartment.getSelectedIndex()).DeptName);
+        jtxtDeptAbbr.setText(arrDeptList.get(jlistDepartment.getSelectedIndex()).DeptAbbr);
+        jtxtDeptId.setEditable(false);
+        jtxtDeptName.setEditable(true);
+        jtxtDeptAbbr.setEditable(true);
+        jbtnSave.setEnabled(true);
+        jbtnDeleteCancel.setEnabled(true);
+        jbtnSave.setText("Save Changes");
+        jbtnDeleteCancel.setText("Delete");
+        }
+    }//GEN-LAST:event_jlistDepartmentValueChanged
+
+    private void jbtnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCreateActionPerformed
+        // TODO add your handling code here:
+        jlistDepartment.clearSelection();
+        jtxtDeptId.setText("ID will be auto-generated");
+        jtxtDeptName.setText("");
+        jtxtDeptAbbr.setText("");
+        jtxtDeptId.setEditable(false);
+        jtxtDeptName.setEditable(true);
+        jtxtDeptAbbr.setEditable(true);
+        jbtnSave.setEnabled(true);
+        jbtnDeleteCancel.setEnabled(true);
+        jbtnSave.setText("Save");
+        jbtnDeleteCancel.setText("Cancel");
+    }//GEN-LAST:event_jbtnCreateActionPerformed
+
+    private void jbtnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSaveActionPerformed
+        // TODO add your handling code here:
+        if(jbtnSave.getText().equals("Save Changes"))
+        {
+            try
+        {
+            Thread t=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        
+                        Socket sock=new Socket("127.0.0.1",9898);
+                        ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
+                        ObjectOutputStream outputToServer=new ObjectOutputStream(sock.getOutputStream());
+                        outputToServer.writeUTF("UPDATE_DEPARTMENT_REQUEST");
+                        Department dept=new Department();
+                        dept.DeptId=Integer.parseInt(jtxtDeptId.getText());
+                        dept.DeptName=jtxtDeptName.getText();
+                        dept.DeptAbbr=jtxtDeptAbbr.getText();
+                        outputToServer.writeObject(dept);
+                        outputToServer.flush();
+                        String result=inputFromServer.readUTF();
+                        System.out.println(result);
+                        if(result.equals("UPDATE_DEPARTMENT_SUCCESSFUL"))
+                        {
+                            
+                        }
+                        else
+                        {
+                            
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                            e.printStackTrace();
+                    }
+                }
+            });
+            t.start();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        }
+        else
+        {
+        try
+        {
+            Thread t=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        
+                        Socket sock=new Socket("127.0.0.1",9898);
+                        ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
+                        ObjectOutputStream outputToServer=new ObjectOutputStream(sock.getOutputStream());
+                        outputToServer.writeUTF("CREATE_DEPARTMENT_REQUEST");
+                        Department dept=new Department();
+                        
+                        dept.DeptName=jtxtDeptName.getText();
+                        dept.DeptAbbr=jtxtDeptAbbr.getText();
+                        outputToServer.writeObject(dept);
+                        outputToServer.flush();
+                        String result=inputFromServer.readUTF();
+                        System.out.println(result);
+                        if(result.equals("CREATE_DEPARTMENT_SUCCESSFUL"))
+                        {
+                            dept.DeptId=inputFromServer.readInt();
+                            System.out.println(dept.DeptId);
+                        }
+                        else
+                        {
+                            
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                            e.printStackTrace();
+                    }
+                }
+            });
+            t.start();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        }
+    }//GEN-LAST:event_jbtnSaveActionPerformed
+
+    private void jbtnDeleteCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDeleteCancelActionPerformed
+        // TODO add your handling code here:
+        
+        if(jbtnDeleteCancel.getText().equals("Delete"))
+        {
+           try
+        {
+            Thread t=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        
+                        Socket sock=new Socket("127.0.0.1",9898);
+                        ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
+                        ObjectOutputStream outputToServer=new ObjectOutputStream(sock.getOutputStream());
+                        outputToServer.writeUTF("DELETE_DEPARTMENT_REQUEST");
+                        
+                        outputToServer.writeInt(Integer.parseInt(jtxtDeptId.getText()));
+                        outputToServer.flush();
+                        String result=inputFromServer.readUTF();
+                        System.out.println(result);
+                        if(result.equals("DELETE_DEPARTMENT_SUCCESSFUL"))
+                        {
+                        }
+                        else
+                        {
+                            
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                            e.printStackTrace();
+                    }
+                }
+            });
+            t.start();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        } 
+        }
+    }//GEN-LAST:event_jbtnDeleteCancelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbtnCreate;
+    private javax.swing.JButton jbtnDeleteCancel;
+    private javax.swing.JButton jbtnSave;
+    private javax.swing.JList<String> jlistDepartment;
+    private javax.swing.JTextField jtxtDeptAbbr;
+    private javax.swing.JTextField jtxtDeptId;
+    private javax.swing.JTextField jtxtDeptName;
     // End of variables declaration//GEN-END:variables
 }
