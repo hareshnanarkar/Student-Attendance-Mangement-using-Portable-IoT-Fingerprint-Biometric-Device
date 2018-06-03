@@ -4,39 +4,34 @@
  * and open the template in the editor.
  */
 package student_attendance_admin_application_client;
-
-import EntityPackage.Department;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
+import EntityPackage.Course;
+import java.net.*;
+import java.io.*;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.border.EtchedBorder;
-
-
 /**
  *
  * @author admin
  */
-public class DepartmentGUI extends javax.swing.JPanel {
-    
+public class CourseGUI extends javax.swing.JPanel {
+
     /**
-     * Creates new form DepartmentGUI
+     * Creates new form CourseGUI
      */
-    ArrayList<Department> arrDeptList;
-    public DepartmentGUI() {
+    ArrayList<Course> arrCourseList;
+    public CourseGUI() {
         initComponents();
         setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-        jtxtDeptId.setEditable(false);
-        jtxtDeptName.setEditable(false);
-        jtxtDeptAbbr.setEditable(false);
+        jtxtCourseId.setEditable(false);
+        jtxtCourseName.setEditable(false);
         jbtnSave.setEnabled(false);
         jbtnDeleteCancel.setEnabled(false);
-        loadDepartmentList();
+        loadCourseList();
     }
 
-    public void loadDepartmentList()
+    public void loadCourseList()
     {
         try
         {
@@ -48,15 +43,15 @@ public class DepartmentGUI extends javax.swing.JPanel {
                         Socket sock=new Socket("127.0.0.1",9898);
                         ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
                         ObjectOutputStream outputToServer=new ObjectOutputStream(sock.getOutputStream());
-                        outputToServer.writeUTF("LOAD_DEPARTMENT_LIST_REQUEST");
+                        outputToServer.writeUTF("LOAD_COURSE_LIST_REQUEST");
                         outputToServer.flush();
-                        arrDeptList=(ArrayList<Department>)inputFromServer.readObject();
+                        arrCourseList=(ArrayList<Course>)inputFromServer.readObject();
                         DefaultListModel<String> listModel=new DefaultListModel<>();
-                        for(int i=0;i<arrDeptList.size();i++)
+                        for(int i=0;i<arrCourseList.size();i++)
                         {
-                            listModel.addElement(arrDeptList.get(i).DeptName);
+                            listModel.addElement(arrCourseList.get(i).CourseName);
                         }
-                        jlistDepartment.setModel(listModel);
+                        jlistCourse.setModel(listModel);
                     }
                     catch(Exception e)
                     {
@@ -71,6 +66,7 @@ public class DepartmentGUI extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -80,41 +76,28 @@ public class DepartmentGUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jlistDepartment = new javax.swing.JList<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jtxtDeptId = new javax.swing.JTextField();
-        jtxtDeptName = new javax.swing.JTextField();
-        jtxtDeptAbbr = new javax.swing.JTextField();
+        jtxtCourseId = new javax.swing.JTextField();
+        jtxtCourseName = new javax.swing.JTextField();
         jbtnCreate = new javax.swing.JButton();
         jbtnDeleteCancel = new javax.swing.JButton();
         jbtnSave = new javax.swing.JButton();
-
-        jLabel1.setText("Add, Remove or Update Department");
-
-        jlistDepartment.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                jlistDepartmentValueChanged(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jlistDepartment);
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jlistCourse = new javax.swing.JList<>();
+        jLabel1 = new javax.swing.JLabel();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel2.setText("Details :");
 
-        jLabel3.setText("Department Id :");
+        jLabel3.setText("Course Id :");
 
-        jLabel4.setText("Department Name :");
+        jLabel4.setText("Course Name :");
 
-        jLabel5.setText("Department Abbreviation :");
-
-        jbtnCreate.setText("Create New Department");
+        jbtnCreate.setText("Create New Course");
         jbtnCreate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnCreateActionPerformed(evt);
@@ -156,15 +139,14 @@ public class DepartmentGUI extends javax.swing.JPanel {
                                 .addGap(26, 26, 26)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))))
+                                    .addComponent(jLabel4))
+                                .addGap(57, 57, 57)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(25, 25, 25)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jtxtDeptId)
-                                    .addComponent(jtxtDeptName)
-                                    .addComponent(jtxtDeptAbbr, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jtxtCourseId, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                                    .addComponent(jtxtCourseName)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(43, 43, 43)
                                 .addComponent(jbtnDeleteCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -180,21 +162,26 @@ public class DepartmentGUI extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jtxtDeptId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtxtCourseId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jtxtDeptName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jtxtDeptAbbr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                    .addComponent(jtxtCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(61, 61, 61)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtnDeleteCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+
+        jlistCourse.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jlistCourseValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jlistCourse);
+
+        jLabel1.setText("Add, Remove or Update Course");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -208,7 +195,7 @@ public class DepartmentGUI extends javax.swing.JPanel {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -223,174 +210,169 @@ public class DepartmentGUI extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jlistDepartmentValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jlistDepartmentValueChanged
-        // TODO add your handling code here:
-        if(jlistDepartment.getSelectedIndex()!=-1)
-        {
-        jtxtDeptId.setText(""+ arrDeptList.get(jlistDepartment.getSelectedIndex()).DeptId);
-        jtxtDeptName.setText(arrDeptList.get(jlistDepartment.getSelectedIndex()).DeptName);
-        jtxtDeptAbbr.setText(arrDeptList.get(jlistDepartment.getSelectedIndex()).DeptAbbr);
-        jtxtDeptId.setEditable(false);
-        jtxtDeptName.setEditable(true);
-        jtxtDeptAbbr.setEditable(true);
-        jbtnSave.setEnabled(true);
-        jbtnDeleteCancel.setEnabled(true);
-        jbtnSave.setText("Save Changes");
-        jbtnDeleteCancel.setText("Delete");
-        }
-    }//GEN-LAST:event_jlistDepartmentValueChanged
-
     private void jbtnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCreateActionPerformed
         // TODO add your handling code here:
-        jlistDepartment.clearSelection();
-        jtxtDeptId.setText("ID will be auto-generated");
-        jtxtDeptName.setText("");
-        jtxtDeptAbbr.setText("");
-        jtxtDeptId.setEditable(false);
-        jtxtDeptName.setEditable(true);
-        jtxtDeptAbbr.setEditable(true);
+        jlistCourse.clearSelection();
+        jtxtCourseId.setText("");
+        jtxtCourseName.setText("");
+        jtxtCourseId.setEditable(true);
+        jtxtCourseName.setEditable(true);
         jbtnSave.setEnabled(true);
         jbtnDeleteCancel.setEnabled(true);
         jbtnSave.setText("Save");
         jbtnDeleteCancel.setText("Cancel");
     }//GEN-LAST:event_jbtnCreateActionPerformed
 
+    private void jbtnDeleteCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDeleteCancelActionPerformed
+        // TODO add your handling code here:
+
+        if(jbtnDeleteCancel.getText().equals("Delete"))
+        {
+            try
+            {
+                Thread t=new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+
+                            Socket sock=new Socket("127.0.0.1",9898);
+                            ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
+                            ObjectOutputStream outputToServer=new ObjectOutputStream(sock.getOutputStream());
+                            outputToServer.writeUTF("DELETE_COURSE_REQUEST");
+
+                            outputToServer.writeUTF(jtxtCourseId.getText());
+                            outputToServer.flush();
+                            String result=inputFromServer.readUTF();
+                            System.out.println(result);
+                            if(result.equals("DELETE_COURSE_SUCCESSFUL"))
+                            {
+                                loadCourseList();
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        catch(Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                t.start();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_jbtnDeleteCancelActionPerformed
+
     private void jbtnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSaveActionPerformed
         // TODO add your handling code here:
         if(jbtnSave.getText().equals("Save Changes"))
         {
             try
-        {
-            Thread t=new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        
-                        Socket sock=new Socket("127.0.0.1",9898);
-                        ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
-                        ObjectOutputStream outputToServer=new ObjectOutputStream(sock.getOutputStream());
-                        outputToServer.writeUTF("UPDATE_DEPARTMENT_REQUEST");
-                        Department dept=new Department();
-                        dept.DeptId=Integer.parseInt(jtxtDeptId.getText());
-                        dept.DeptName=jtxtDeptName.getText();
-                        dept.DeptAbbr=jtxtDeptAbbr.getText();
-                        outputToServer.writeObject(dept);
-                        outputToServer.flush();
-                        String result=inputFromServer.readUTF();
-                        System.out.println(result);
-                        if(result.equals("UPDATE_DEPARTMENT_SUCCESSFUL"))
-                        {
-                            loadDepartmentList();
+            {
+                Thread t=new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+
+                            Socket sock=new Socket("127.0.0.1",9898);
+                            ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
+                            ObjectOutputStream outputToServer=new ObjectOutputStream(sock.getOutputStream());
+                            outputToServer.writeUTF("UPDATE_COURSE_REQUEST");
+                            Course course=new Course();
+                            course.CourseId=jtxtCourseId.getText();
+                            course.CourseName=jtxtCourseName.getText();
+                            outputToServer.writeObject(course);
+                            outputToServer.flush();
+                            String result=inputFromServer.readUTF();
+                            System.out.println(result);
+                            if(result.equals("UPDATE_COURSE_SUCCESSFUL"))
+                            {
+                                loadCourseList();
+                            }
+                            else
+                            {
+
+                            }
                         }
-                        else
+                        catch(Exception e)
                         {
-                            
-                        }
-                    }
-                    catch(Exception e)
-                    {
                             e.printStackTrace();
+                        }
                     }
-                }
-            });
-            t.start();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+                });
+                t.start();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
         }
         else
         {
-        try
-        {
-            Thread t=new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        
-                        Socket sock=new Socket("127.0.0.1",9898);
-                        ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
-                        ObjectOutputStream outputToServer=new ObjectOutputStream(sock.getOutputStream());
-                        outputToServer.writeUTF("CREATE_DEPARTMENT_REQUEST");
-                        Department dept=new Department();
-                        
-                        dept.DeptName=jtxtDeptName.getText();
-                        dept.DeptAbbr=jtxtDeptAbbr.getText();
-                        outputToServer.writeObject(dept);
-                        outputToServer.flush();
-                        String result=inputFromServer.readUTF();
-                        System.out.println(result);
-                        if(result.equals("CREATE_DEPARTMENT_SUCCESSFUL"))
-                        {
-                            dept.DeptId=inputFromServer.readInt();
-                            System.out.println(dept.DeptId);
-                            loadDepartmentList();
-                        }
-                        else
-                        {
+            try
+            {
+                Thread t=new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+
+                            Socket sock=new Socket("127.0.0.1",9898);
+                            ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
+                            ObjectOutputStream outputToServer=new ObjectOutputStream(sock.getOutputStream());
+                            outputToServer.writeUTF("CREATE_COURSE_REQUEST");
+                            Course course=new Course();
+                            course.CourseId=jtxtCourseId.getText();
+                            course.CourseName=jtxtCourseName.getText();
                             
+                            outputToServer.writeObject(course);
+                            outputToServer.flush();
+                            String result=inputFromServer.readUTF();
+                            System.out.println(result);
+                            if(result.equals("CREATE_COURSE_SUCCESSFUL"))
+                            {
+                                
+                                loadCourseList();
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        catch(Exception e)
+                        {
+                            e.printStackTrace();
                         }
                     }
-                    catch(Exception e)
-                    {
-                            e.printStackTrace();
-                    }
-                }
-            });
-            t.start();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+                });
+                t.start();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_jbtnSaveActionPerformed
 
-    private void jbtnDeleteCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDeleteCancelActionPerformed
+    private void jlistCourseValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jlistCourseValueChanged
         // TODO add your handling code here:
-        
-        if(jbtnDeleteCancel.getText().equals("Delete"))
+        if(jlistCourse.getSelectedIndex()!=-1)
         {
-           try
-        {
-            Thread t=new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        
-                        Socket sock=new Socket("127.0.0.1",9898);
-                        ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
-                        ObjectOutputStream outputToServer=new ObjectOutputStream(sock.getOutputStream());
-                        outputToServer.writeUTF("DELETE_DEPARTMENT_REQUEST");
-                        
-                        outputToServer.writeInt(Integer.parseInt(jtxtDeptId.getText()));
-                        outputToServer.flush();
-                        String result=inputFromServer.readUTF();
-                        System.out.println(result);
-                        if(result.equals("DELETE_DEPARTMENT_SUCCESSFUL"))
-                        {
-                            loadDepartmentList();
-                        }
-                        else
-                        {
-                            
-                        }
-                    }
-                    catch(Exception e)
-                    {
-                            e.printStackTrace();
-                    }
-                }
-            });
-            t.start();
+            jtxtCourseId.setText(arrCourseList.get(jlistCourse.getSelectedIndex()).CourseId);
+            jtxtCourseName.setText(arrCourseList.get(jlistCourse.getSelectedIndex()).CourseName);
+            
+            jtxtCourseId.setEditable(false);
+            jtxtCourseName.setEditable(true);
+            jbtnSave.setEnabled(true);
+            jbtnDeleteCancel.setEnabled(true);
+            jbtnSave.setText("Save Changes");
+            jbtnDeleteCancel.setText("Delete");
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        } 
-        }
-    }//GEN-LAST:event_jbtnDeleteCancelActionPerformed
+    }//GEN-LAST:event_jlistCourseValueChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -398,15 +380,13 @@ public class DepartmentGUI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbtnCreate;
     private javax.swing.JButton jbtnDeleteCancel;
     private javax.swing.JButton jbtnSave;
-    private javax.swing.JList<String> jlistDepartment;
-    private javax.swing.JTextField jtxtDeptAbbr;
-    private javax.swing.JTextField jtxtDeptId;
-    private javax.swing.JTextField jtxtDeptName;
+    private javax.swing.JList<String> jlistCourse;
+    private javax.swing.JTextField jtxtCourseId;
+    private javax.swing.JTextField jtxtCourseName;
     // End of variables declaration//GEN-END:variables
 }

@@ -21,7 +21,7 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
-        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        setSize(800, 600);
         setVisible(true);
         LoginGUI loginGUI=new LoginGUI(this);
         

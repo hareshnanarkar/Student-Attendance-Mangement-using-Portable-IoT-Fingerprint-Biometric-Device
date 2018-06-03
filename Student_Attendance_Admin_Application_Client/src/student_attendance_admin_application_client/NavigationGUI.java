@@ -25,10 +25,11 @@ public class NavigationGUI extends javax.swing.JPanel {
         DefaultListModel<String> listModel=new DefaultListModel<>();
         listModel.addElement("Dashboard");
         listModel.addElement("Department");
+        listModel.addElement("Course");
         listModel.addElement("Batch");
+        listModel.addElement("Batch Mapper");
         listModel.addElement("Student");
         listModel.addElement("Professor");
-        listModel.addElement("Course");
         listModel.addElement("Subject");
         jlistNavigator.setModel(listModel);
         jlistNavigator.setSelectedIndex(0);
@@ -66,6 +67,7 @@ public class NavigationGUI extends javax.swing.JPanel {
 
     private void jlistNavigatorValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jlistNavigatorValueChanged
         // TODO add your handling code here:
+        if (!evt.getValueIsAdjusting()) {
         String selectedOption=jlistNavigator.getSelectedValue();
         System.out.println(selectedOption);
         if(selectedOption.equals("Department"))
@@ -81,6 +83,49 @@ public class NavigationGUI extends javax.swing.JPanel {
             parentGUI.currJPanel=new DashboardGUI();
             parentGUI.add(parentGUI.currJPanel,BorderLayout.CENTER);
             parentGUI.validate();
+        }
+        else if(selectedOption.equals("Course"))
+        {
+            parentGUI.remove(parentGUI.currJPanel);
+            parentGUI.currJPanel=new CourseGUI();
+            parentGUI.add(parentGUI.currJPanel,BorderLayout.CENTER);
+            parentGUI.validate();
+        }
+        else if(selectedOption.equals("Student"))
+        {
+            parentGUI.remove(parentGUI.currJPanel);
+            parentGUI.currJPanel=new StudentGUI();
+            parentGUI.add(parentGUI.currJPanel,BorderLayout.CENTER);
+            parentGUI.validate();
+        }
+        else if(selectedOption.equals("Professor"))
+        {
+            parentGUI.remove(parentGUI.currJPanel);
+            parentGUI.currJPanel=new ProfessorGUI();
+            parentGUI.add(parentGUI.currJPanel,BorderLayout.CENTER);
+            parentGUI.validate();
+        }
+        else if(selectedOption.equals("Subject"))
+        {
+            parentGUI.remove(parentGUI.currJPanel);
+            parentGUI.currJPanel=new SubjectGUI();
+            parentGUI.add(parentGUI.currJPanel,BorderLayout.CENTER);
+            parentGUI.validate();
+        }
+        else if(selectedOption.equals("Batch"))
+        {
+            parentGUI.remove(parentGUI.currJPanel);
+            parentGUI.currJPanel=new BatchGUI();
+            parentGUI.add(parentGUI.currJPanel,BorderLayout.CENTER);
+            parentGUI.validate();
+        }
+        else if(selectedOption.equals("Batch Mapper"))
+        {
+            parentGUI.remove(parentGUI.currJPanel);
+            parentGUI.currJPanel=new BatchMapperGUI();
+            parentGUI.add(parentGUI.currJPanel,BorderLayout.CENTER);
+            parentGUI.validate();
+        }
         }
     }//GEN-LAST:event_jlistNavigatorValueChanged
 
