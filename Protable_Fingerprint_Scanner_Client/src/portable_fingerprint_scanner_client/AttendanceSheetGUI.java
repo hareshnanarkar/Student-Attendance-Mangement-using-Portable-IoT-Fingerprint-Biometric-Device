@@ -1,0 +1,213 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package portable_fingerprint_scanner_client;
+
+import EntityPackage.StudentAttedanceInfo;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+
+/**
+ *
+ * @author admin
+ */
+public class AttendanceSheetGUI extends javax.swing.JPanel {
+
+    /**
+     * Creates new form AttendanceSheetGUI
+     */
+    BiometricsGUI mainGUI;
+    public AttendanceSheetGUI(BiometricsGUI gui) {
+        initComponents();
+        mainGUI=gui;
+        jlblBatch.setText(mainGUI.attendanceSheet.BatchName);
+        jlblSubject.setText(mainGUI.attendanceSheet.SubName);
+        jlblDate.setText("Date : "+ mainGUI.attendanceSheet.AttendanceDate);
+        loadStudentBatchList(mainGUI.attendanceSheet.BatchId);
+        jlistStudent.setCellRenderer(new MyListCellRenderer());
+        jScrollPane1.getVerticalScrollBar().setPreferredSize(new Dimension(30,0));
+    }
+    class MyListCellRenderer extends JLabel implements ListCellRenderer {
+
+        int conta = 5;
+
+        public MyListCellRenderer() {
+            super();
+            setOpaque(true);
+        }
+
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value,
+                int index, boolean isSelected, boolean cellHasFocus) {
+            setText(value.toString());
+                setBackground(new Color(255,204,204));
+                if(index==2 || index==4)
+                    setBackground(new Color(204,255,204));
+                setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                setFont(new Font("Tahoma", Font.PLAIN, 24));
+            
+            return this;
+        }
+    }
+    public void loadStudentBatchList(int batchId)
+    {
+        try
+        {
+            Thread t=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        
+                        Socket sock=new Socket("192.168.43.189",9899);
+                        ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
+                        ObjectOutputStream outputToServer=new ObjectOutputStream(sock.getOutputStream());
+                        BiometricClientServerCommands bcsCommands=new BiometricClientServerCommands();
+                        outputToServer.writeInt(bcsCommands.LOAD_STUDENT_BATCH_LIST);
+                        System.out.println("Batch Id : "+batchId);
+                        outputToServer.writeInt(batchId);
+                        outputToServer.flush();
+                        
+                        mainGUI.attendanceSheet.StudentAttInfoList=(ArrayList<StudentAttedanceInfo>)inputFromServer.readObject();
+                        DefaultListModel<String> listModel=new DefaultListModel<>();
+                        
+                        try
+                        {   
+                            FingerPrintScanner Serialconnector=new FingerPrintScanner();
+                            if(Serialconnector.open("COM8"))
+                            {
+                                for(int i=0;i<mainGUI.attendanceSheet.StudentAttInfoList.size();i++)
+                                {
+                                    System.out.println("i:"+ (i+1));
+                                    Serialconnector.setTemplate(i+1, mainGUI.attendanceSheet.StudentAttInfoList.get(i).FingerPrintTemplate);
+                                }
+                            }
+                            Serialconnector.close();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        } 
+                        for(int i=0;i<mainGUI.attendanceSheet.StudentAttInfoList.size();i++)
+                        {
+                            StudentAttedanceInfo stud=mainGUI.attendanceSheet.StudentAttInfoList.get(i);
+                            listModel.addElement(stud.RollNo+" - "+stud.FirstName+" "+ stud.LastName);
+                        }
+                        jlistStudent.setModel(listModel);
+                    }    
+                    catch(Exception e)
+                    {
+                            e.printStackTrace();
+                    }
+                }
+            });
+            t.start();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jlblBatch = new javax.swing.JLabel();
+        jlblSubject = new javax.swing.JLabel();
+        jlblDate = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jlistStudent = new javax.swing.JList<>();
+
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 10, 5));
+        setLayout(new java.awt.BorderLayout(10, 10));
+
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 32)); // NOI18N
+        jLabel1.setText("Attendance Sheet");
+        jPanel1.add(jLabel1, java.awt.BorderLayout.CENTER);
+
+        add(jPanel1, java.awt.BorderLayout.NORTH);
+
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 32)); // NOI18N
+        jButton1.setText("Submit");
+        add(jButton1, java.awt.BorderLayout.SOUTH);
+
+        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 10, 5));
+        jPanel2.setLayout(new java.awt.BorderLayout(10, 5));
+
+        jPanel3.setLayout(new java.awt.GridLayout(3, 1, 5, 5));
+
+        jlblBatch.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jlblBatch.setText("Batch :");
+        jPanel3.add(jlblBatch);
+
+        jlblSubject.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jlblSubject.setText("subject :");
+        jPanel3.add(jlblSubject);
+
+        jlblDate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jlblDate.setText("Date :");
+        jPanel3.add(jlblDate);
+
+        jPanel2.add(jPanel3, java.awt.BorderLayout.PAGE_START);
+
+        jPanel4.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 10, 5));
+        jPanel4.setLayout(new java.awt.BorderLayout(5, 5));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setText("Student list : (Green - Present)");
+        jPanel4.add(jLabel5, java.awt.BorderLayout.NORTH);
+
+        jlistStudent.setBackground(new java.awt.Color(255, 204, 204));
+        jlistStudent.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jScrollPane1.setViewportView(jlistStudent);
+
+        jPanel4.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel2.add(jPanel4, java.awt.BorderLayout.CENTER);
+
+        add(jPanel2, java.awt.BorderLayout.CENTER);
+    }// </editor-fold>//GEN-END:initComponents
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jlblBatch;
+    private javax.swing.JLabel jlblDate;
+    private javax.swing.JLabel jlblSubject;
+    private javax.swing.JList<String> jlistStudent;
+    // End of variables declaration//GEN-END:variables
+}
