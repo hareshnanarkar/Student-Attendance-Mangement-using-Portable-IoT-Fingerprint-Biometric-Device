@@ -15,5 +15,9 @@ public class BiometricClientServerCommands {
     public final int PROFESSOR_NOT_FOUND=3;
     public final int LOAD_BATCH_SUBJECT_TAUGHT_BY_PROFESSOR=4;
     public final int LOAD_STUDENT_BATCH_LIST=5;
+    public final int STORE_ATTENDANCE_SHEET=6;
+    public final int STORE_ATTENDANCE_SUCCESSFUL=7;
+    public final int ATTENDANCE_SHEET_CREATION_FAILED=8;
+    public final int STORE_ATTENDANCE_FAILED=9;
     
 }

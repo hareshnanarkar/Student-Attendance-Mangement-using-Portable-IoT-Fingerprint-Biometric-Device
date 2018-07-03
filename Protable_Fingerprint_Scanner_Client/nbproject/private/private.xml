@@ -3,21 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/EntityPackage/Subject.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/BiometricClientServerCommands.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/AttendanceDateGUI.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/EntityPackage/StudentBatch.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/EntityPackage/Student.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/Portable_Fingerprint_Scanner_Client.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/AttendanceSubmittedGUI.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/ProfessorBatchSubjectGUI.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/BiometricsGUI.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/FingerPrintScanner.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/EntityPackage/BatchSubject.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/BiometricClientServerCommands.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/Portable_Fingerprint_Scanner_Client.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/EntityPackage/StudentAttedanceInfo.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/ProfessorBatchSubjectGUI.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/EntityPackage/AttendanceSheet.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/InitialProfessorAuthenticationGUI.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/EntityPackage/SubjectProfessor.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/AttendanceSheetGUI.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/Protable_Fingerprint_Scanner_Client/src/portable_fingerprint_scanner_client/InitialProfessorAuthenticationGUI.java</file>
         </group>
     </open-files>
 </project-private>

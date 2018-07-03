@@ -79,6 +79,10 @@ public class ProfessorBatchSubjectGUI extends javax.swing.JPanel {
                     }    
                     catch(Exception e)
                     {
+                            UIManager.put("OptionPane.messageFont",new FontUIResource(new Font("Tahoma", Font.PLAIN, 24)));
+                            UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Tahoma",Font.PLAIN,24)));
+                            JOptionPane.showMessageDialog(null, "<html>Connection with Server failed.<br/>Please retry.</html>");
+                            
                             e.printStackTrace();
                     }
                 }
@@ -87,6 +91,10 @@ public class ProfessorBatchSubjectGUI extends javax.swing.JPanel {
         }
         catch(Exception e)
         {
+            UIManager.put("OptionPane.messageFont",new FontUIResource(new Font("Tahoma", Font.PLAIN, 24)));
+            UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Tahoma",Font.PLAIN,24)));
+            JOptionPane.showMessageDialog(null, "<html>Oops.<br/>Please retry.</html>");
+                            
             e.printStackTrace();
         }
     }
@@ -101,6 +109,8 @@ public class ProfessorBatchSubjectGUI extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jlblHiUser = new javax.swing.JLabel();
+        jbtnLogout = new javax.swing.JButton();
+        jbtnReload = new javax.swing.JButton();
         jbtnProceed = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -114,11 +124,31 @@ public class ProfessorBatchSubjectGUI extends javax.swing.JPanel {
 
         jlblHiUser.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jlblHiUser.setText("jLabel1");
-        jPanel1.add(jlblHiUser, java.awt.BorderLayout.NORTH);
+        jPanel1.add(jlblHiUser, java.awt.BorderLayout.CENTER);
+
+        jbtnLogout.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jbtnLogout.setMargin(new java.awt.Insets(15, 14, 15, 14));
+        jbtnLogout.setText("Logout");
+        jbtnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnLogoutActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jbtnLogout, java.awt.BorderLayout.EAST);
+
+        jbtnReload.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jbtnReload.setMargin(new java.awt.Insets(15, 14, 15, 14));
+        jbtnReload.setText("Reload");
+        jbtnReload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnReloadActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jbtnReload, java.awt.BorderLayout.LINE_START);
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
-        jbtnProceed.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jbtnProceed.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jbtnProceed.setText("Proceed");
         jbtnProceed.setMargin(new java.awt.Insets(30, 14, 30, 14));
         jbtnProceed.addActionListener(new java.awt.event.ActionListener() {
@@ -168,22 +198,41 @@ public class ProfessorBatchSubjectGUI extends javax.swing.JPanel {
             mainGUI.attendanceSheet.BatchId=arrBatchSubject.get(jtblProfBatchSubject.getSelectedRow()).BatchId;
             System.out.println("Batch Id :" + arrBatchSubject.get(jtblProfBatchSubject.getSelectedRow()).BatchId);
             mainGUI.attendanceSheet.BatchName=arrBatchSubject.get(jtblProfBatchSubject.getSelectedRow()).BatchName;
-            mainGUI.attendanceSheet.BatchId=arrBatchSubject.get(jtblProfBatchSubject.getSelectedRow()).SubId;
+            mainGUI.attendanceSheet.SubId=arrBatchSubject.get(jtblProfBatchSubject.getSelectedRow()).SubId;
             mainGUI.attendanceSheet.SubName=arrBatchSubject.get(jtblProfBatchSubject.getSelectedRow()).SubName;
             
             mainGUI.remove(mainGUI.currJPanel);
             mainGUI.currJPanel=new AttendanceDateGUI(mainGUI);
             mainGUI.add(mainGUI.currJPanel,BorderLayout.CENTER);
             mainGUI.validate();
+            
+            mainGUI.stackPanel.push(this);
         }
         else
         {
             UIManager.put("OptionPane.messageFont",new FontUIResource(new Font("Tahoma", Font.PLAIN, 24)));
             UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Tahoma",Font.PLAIN,24)));
-            JOptionPane.showMessageDialog(null,"Please select Batch and Subject" );
+            JOptionPane.showMessageDialog(null,"Please select Batch and Subject");
                                     
         }
     }//GEN-LAST:event_jbtnProceedActionPerformed
+
+    private void jbtnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnLogoutActionPerformed
+        // TODO add your handling code here:
+        mainGUI.prof=null;
+        mainGUI.attendanceSheet=null;
+        mainGUI.stackPanel.clear();
+        mainGUI.remove(mainGUI.currJPanel);
+        mainGUI.currJPanel=new InitialProfessorAuthenticationGUI(mainGUI);
+        mainGUI.add(mainGUI.currJPanel);
+        mainGUI.repaint();
+        mainGUI.validate();
+    }//GEN-LAST:event_jbtnLogoutActionPerformed
+
+    private void jbtnReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnReloadActionPerformed
+        // TODO add your handling code here:
+        loadBatchSubjectList(mainGUI.prof.ProfId);
+    }//GEN-LAST:event_jbtnReloadActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -191,7 +240,9 @@ public class ProfessorBatchSubjectGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton jbtnLogout;
     private javax.swing.JButton jbtnProceed;
+    private javax.swing.JButton jbtnReload;
     private javax.swing.JLabel jlblHiUser;
     private javax.swing.JTable jtblProfBatchSubject;
     // End of variables declaration//GEN-END:variables

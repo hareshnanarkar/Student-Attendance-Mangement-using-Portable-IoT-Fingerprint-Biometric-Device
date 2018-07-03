@@ -8,6 +8,7 @@ package portable_fingerprint_scanner_client;
 import EntityPackage.AttendanceSheet;
 import EntityPackage.Professor;
 import java.awt.BorderLayout;
+import java.util.Stack;
 import javax.swing.JPanel;
 
 /**
@@ -18,14 +19,16 @@ public class BiometricsGUI extends javax.swing.JFrame {
     public Professor prof;
     public AttendanceSheet attendanceSheet;
     public JPanel currJPanel;
+    public Stack<JPanel> stackPanel;
     /**
      * Creates new form BiometricsGUI
      */
     public BiometricsGUI() {
         initComponents();
         this.setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
-        
+        stackPanel=new Stack();
         add(currJPanel=new InitialProfessorAuthenticationGUI(this),BorderLayout.CENTER);
+        
         setVisible(true);
         
     }

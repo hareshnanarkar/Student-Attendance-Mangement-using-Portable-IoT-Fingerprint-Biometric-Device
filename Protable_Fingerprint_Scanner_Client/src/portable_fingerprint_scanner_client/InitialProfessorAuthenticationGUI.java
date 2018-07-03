@@ -39,10 +39,7 @@ public void loadProfessorFingerPrint(int profId)
     {
         try
         {
-            Thread t=new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
+            
                         LoadProfessorFlag=false;
                         Socket sock=new Socket("192.168.43.189",9899);
                         ObjectInputStream inputFromServer=new ObjectInputStream(sock.getInputStream());
@@ -61,23 +58,22 @@ public void loadProfessorFingerPrint(int profId)
                         }
                         else
                         {
+                            UIManager.put("OptionPane.messageFont",new FontUIResource(new Font("Tahoma", Font.PLAIN, 24)));
+                            UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Tahoma",Font.PLAIN,24)));
+                            
+                            JOptionPane.showMessageDialog(null, "<html>Failed to loaded. Please<br/>ensure provided Professor ID<br/>is valid and then retry.</html>");
                             
                         }
                     }    
                     catch(Exception e)
-                    {
-                            e.printStackTrace();
+                    {System.out.println("helllo");
+                            UIManager.put("OptionPane.messageFont",new FontUIResource(new Font("Tahoma", Font.PLAIN, 24)));
+                            UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Tahoma",Font.PLAIN,24)));
+                            JOptionPane.showMessageDialog(null, "<html>Connection with Server failed.<br/>Please retry.</html>");
+                             e.printStackTrace();
                             
                     }
-                }
-            });
-            t.start();
-            t.join();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+                
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -239,11 +235,11 @@ public void loadProfessorFingerPrint(int profId)
         });
         jPanel3.add(jButton0);
 
-        jLabel3.setText("jLabel3");
+        jLabel3.setText(" ");
         jPanel3.add(jLabel3);
 
         jButtonBS.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButtonBS.setText("BackSp");
+        jButtonBS.setText("<--");
         jButtonBS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBSActionPerformed(evt);
@@ -330,7 +326,18 @@ public void loadProfessorFingerPrint(int profId)
 
     private void jbtnStartProfAuthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnStartProfAuthActionPerformed
         // TODO add your handling code here:
-        int profId=Integer.parseInt(jtxtProfId.getText());
+        int profId;
+        try
+        {
+            profId=Integer.parseInt(jtxtProfId.getText());
+        }
+        catch(Exception ex)
+        {
+            UIManager.put("OptionPane.messageFont",new FontUIResource(new Font("Tahoma", Font.PLAIN, 24)));
+            UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Tahoma",Font.PLAIN,24)));
+            JOptionPane.showMessageDialog(null, "Please enter valid Professor ID");
+            return;
+        }
         loadProfessorFingerPrint(profId);
         if(LoadProfessorFlag)
         {
@@ -340,11 +347,9 @@ public void loadProfessorFingerPrint(int profId)
                 @Override
                 public void run() {
                     FingerPrintScanner Serialconnector=new FingerPrintScanner();
-                    //byte template[]=null;
-                    //stud.FingerTemplate=new byte[498];
                     try
                     {
-                        if(Serialconnector.open("COM8"))
+                        if(Serialconnector.open("/dev/ttyUSB0"))
                         {
                             Serialconnector.deleteAllFingerPrintFromDevice();
                             Serialconnector.setTemplate(0, mainGUI.prof.FingerTemplate);
@@ -355,6 +360,7 @@ public void loadProfessorFingerPrint(int profId)
                                 System.out.println("resullt : "+result);
                                 if(result)
                                 {
+                                    
                                     mainGUI.remove(mainGUI.currJPanel);
                                     mainGUI.currJPanel=new ProfessorBatchSubjectGUI(mainGUI);
                                     mainGUI.add(mainGUI.currJPanel,BorderLayout.CENTER);
@@ -369,10 +375,18 @@ public void loadProfessorFingerPrint(int profId)
                                     if(val!=JOptionPane.YES_OPTION)
                                         break;
                                 }
+                                Serialconnector.close();
                             }
                         }
                         Serialconnector.close();
                     } catch (Exception ex) {
+                        try{
+                            Serialconnector.close();
+                            }catch(Exception ee){}
+                        UIManager.put("OptionPane.messageFont",new FontUIResource(new Font("Tahoma", Font.PLAIN, 24)));
+                        UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Tahoma",Font.PLAIN,24)));
+                        JOptionPane.showMessageDialog(null, "<html>Communication with<br/>Fingerprint Scanner failed.<br/>Please retry.</html>");
+                        
                         ex.printStackTrace();
                     }
                 }
@@ -381,6 +395,11 @@ public void loadProfessorFingerPrint(int profId)
         }
         catch(Exception e)
         {
+            UIManager.put("OptionPane.messageFont",new FontUIResource(new Font("Tahoma", Font.PLAIN, 24)));
+            UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Tahoma",Font.PLAIN,24)));
+            System.out.println("OOpppsss");
+            JOptionPane.showMessageDialog(null, "Oops.Please retry.");
+            
             e.printStackTrace();
         }
         }

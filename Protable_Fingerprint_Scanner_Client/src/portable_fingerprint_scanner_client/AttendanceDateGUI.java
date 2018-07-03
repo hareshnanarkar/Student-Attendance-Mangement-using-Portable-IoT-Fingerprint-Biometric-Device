@@ -6,11 +6,16 @@
 package portable_fingerprint_scanner_client;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.text.BadLocationException;
 
 /**
@@ -42,6 +47,8 @@ public class AttendanceDateGUI extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jlblHiUser = new javax.swing.JLabel();
+        jbtnBack = new javax.swing.JButton();
+        jbtnLogout = new javax.swing.JButton();
         jbtnProceed = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -67,13 +74,34 @@ public class AttendanceDateGUI extends javax.swing.JPanel {
 
         jPanel2.setLayout(new java.awt.BorderLayout(10, 10));
 
-        jlblHiUser.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jlblHiUser.setText("jLabel1");
-        jPanel2.add(jlblHiUser, java.awt.BorderLayout.NORTH);
+        jlblHiUser.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jlblHiUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlblHiUser.setText("Attendance Date");
+        jPanel2.add(jlblHiUser, java.awt.BorderLayout.CENTER);
+
+        jbtnBack.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jbtnBack.setMargin(new java.awt.Insets(15, 14, 15, 14));
+        jbtnBack.setText("Back");
+        jbtnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnBackActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jbtnBack, java.awt.BorderLayout.WEST);
+
+        jbtnLogout.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jbtnLogout.setMargin(new java.awt.Insets(10, 14, 10, 14));
+        jbtnLogout.setText("Logout");
+        jbtnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnLogoutActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jbtnLogout, java.awt.BorderLayout.EAST);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
-        jbtnProceed.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jbtnProceed.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jbtnProceed.setText("Proceed");
         jbtnProceed.setMargin(new java.awt.Insets(30, 14, 30, 14));
         jbtnProceed.addActionListener(new java.awt.event.ActionListener() {
@@ -87,7 +115,7 @@ public class AttendanceDateGUI extends javax.swing.JPanel {
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 10, 5));
         jPanel3.setLayout(new java.awt.BorderLayout(5, 10));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 32)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setText("Enter Date (DD-MM-YYYY)");
         jPanel3.add(jLabel2, java.awt.BorderLayout.PAGE_START);
 
@@ -196,7 +224,7 @@ public class AttendanceDateGUI extends javax.swing.JPanel {
         jPanel4.add(jbtnDash);
 
         jButtonBS.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButtonBS.setText("BackSp");
+        jButtonBS.setText("<--");
         jButtonBS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBSActionPerformed(evt);
@@ -206,7 +234,7 @@ public class AttendanceDateGUI extends javax.swing.JPanel {
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
-        jtxtDate.setFont(new java.awt.Font("Tahoma", 1, 32)); // NOI18N
+        jtxtDate.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jtxtDate.setToolTipText("DD-MM-YYYY");
         jtxtDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -305,12 +333,64 @@ public class AttendanceDateGUI extends javax.swing.JPanel {
 
     private void jbtnProceedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnProceedActionPerformed
         // TODO add your handling code here:
-        mainGUI.attendanceSheet.AttendanceDate=jtxtDate.getText();
+        SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+        sdf.setLenient(false);
+        try
+        {
+            Date AttDate=sdf.parse(jtxtDate.getText());
+            System.out.println(AttDate.toString());
+            Date CurrDate=new Date();
+            
+            System.out.println(CurrDate.toString());
+            System.out.println(CurrDate.after(AttDate));
+            if(CurrDate.before(AttDate))
+            {
+                UIManager.put("OptionPane.messageFont",new FontUIResource(new Font("Tahoma", Font.PLAIN, 24)));
+                UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Tahoma",Font.PLAIN,24)));
+                JOptionPane.showMessageDialog(null, "Future Date not allowed");
+                return;
+            }
+        }
+        catch(Exception ex)
+        {
+            UIManager.put("OptionPane.messageFont",new FontUIResource(new Font("Tahoma", Font.PLAIN, 24)));
+            UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("Tahoma",Font.PLAIN,24)));
+            JOptionPane.showMessageDialog(null, "Please enter valid Date");
+            return;
+        }
+        try {
+            mainGUI.attendanceSheet.AttendanceDate=sdf.format(sdf.parse(jtxtDate.getText()));
+            System.out.println("date haresh :"+ sdf.format(sdf.parse(jtxtDate.getText())));
+        } catch (ParseException ex) {
+            Logger.getLogger(AttendanceDateGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         mainGUI.remove(mainGUI.currJPanel);
         mainGUI.currJPanel=new AttendanceSheetGUI(mainGUI);
         mainGUI.add(mainGUI.currJPanel,BorderLayout.CENTER);
         mainGUI.validate();
+        mainGUI.stackPanel.push(this);
+        
     }//GEN-LAST:event_jbtnProceedActionPerformed
+
+    private void jbtnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBackActionPerformed
+        // TODO add your handling code here:
+        mainGUI.remove(mainGUI.currJPanel);
+        mainGUI.currJPanel=mainGUI.stackPanel.pop();
+        mainGUI.add(mainGUI.currJPanel);
+        mainGUI.validate();
+    }//GEN-LAST:event_jbtnBackActionPerformed
+
+    private void jbtnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnLogoutActionPerformed
+        // TODO add your handling code here:
+        mainGUI.prof=null;
+        mainGUI.attendanceSheet=null;
+        mainGUI.stackPanel.clear();
+        mainGUI.remove(mainGUI.currJPanel);
+        mainGUI.currJPanel=new InitialProfessorAuthenticationGUI(mainGUI);
+        mainGUI.add(mainGUI.currJPanel);
+        mainGUI.repaint();
+        mainGUI.validate();
+    }//GEN-LAST:event_jbtnLogoutActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -330,7 +410,9 @@ public class AttendanceDateGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JButton jbtnBack;
     private javax.swing.JButton jbtnDash;
+    private javax.swing.JButton jbtnLogout;
     private javax.swing.JButton jbtnProceed;
     private javax.swing.JLabel jlblHiUser;
     private javax.swing.JTextField jtxtDate;

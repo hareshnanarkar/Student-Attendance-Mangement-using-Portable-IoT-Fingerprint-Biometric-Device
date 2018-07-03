@@ -438,17 +438,18 @@ public class FingerPrintScanner {
     }
     public int identify1_N() throws Exception
 	{
-		sendRequest(Commands.Identify1_N);
-		byte[] res = getResponse(5000);
+            if(IsPressFinger() != true )
+                    return 200;
+            CaptureFinger(true);
+            sendRequest(Commands.Identify1_N);
+            byte[] res = getResponse(100);
 		
-		int retval = intFromParameter();
-		//if (retval > 200) retval = 200;
+            int retval = intFromParameter();
 		return retval;
 	}
     public Boolean verify1_1(int id) throws Exception
     {
         LEDON();
-        
         while(IsPressFinger() != true) 
             Thread.sleep(100);
         CaptureFinger(true);
