@@ -117,6 +117,67 @@ public class ServerHelperThread implements Runnable {
             outputToClient.writeObject(arrBatchStudentList);
             outputToClient.flush();
         }
+        else if(operation==bcsCommand.STORE_ATTENDANCE_SHEET)
+        {
+            System.out.println("store attendance");
+            AttendanceSheet attendSheet=(AttendanceSheet)inputFromClient.readObject();
+            String dbURL = "jdbc:sqlserver://ADMIN-PC:1433;databaseName=StudentAttendanceDB;user=haresh;password=haresh@123";
+            Connection dbConn = DriverManager.getConnection(dbURL);
+            try
+            {
+            dbConn.setAutoCommit(false);
+            System.out.println(attendSheet.SubId+","+attendSheet.SubName);
+            String query="INSERT INTO AttendanceSheet(BatchId,SubjectId,ProfessorId,AttDate) VALUES(?,?,?,convert(date,?,105))";
+            PreparedStatement prepStmt=dbConn.prepareStatement(query,PreparedStatement.RETURN_GENERATED_KEYS);
+            prepStmt.setInt(1, attendSheet.BatchId);
+            prepStmt.setInt(2, attendSheet.SubId);
+            prepStmt.setInt(3, attendSheet.ProfId);
+            prepStmt.setString(4, attendSheet.AttendanceDate);
+            prepStmt.executeUpdate();
+            ResultSet rs=prepStmt.getGeneratedKeys();
+            if(rs.next())
+            {
+                attendSheet.AttendanceSheetId=rs.getInt(1);
+                query="INSERT into AttendanceStudent(AttSheetId,StudId,Status) values(?,?,?)";
+                prepStmt=dbConn.prepareStatement(query);
+                for(StudentAttedanceInfo info:attendSheet.StudentAttInfoList)
+                {
+                    prepStmt.setInt(1, attendSheet.AttendanceSheetId);
+                    prepStmt.setInt(2, info.StudId);
+                    prepStmt.setBoolean(3, info.Presence);
+                    prepStmt.addBatch();
+                }
+                prepStmt.executeBatch();
+                dbConn.commit();
+                System.out.println("Success storing");
+                outputToClient.writeInt(bcsCommand.STORE_ATTENDANCE_SUCCESSFUL);
+                outputToClient.writeInt(attendSheet.AttendanceSheetId);
+                outputToClient.flush();
+            }
+            else
+            {
+                outputToClient.writeInt(bcsCommand.ATTENDANCE_SHEET_CREATION_FAILED);
+                outputToClient.flush();
+            }
+            
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                System.out.println("Rollbacking");
+                try
+                {
+                    dbConn.rollback();
+                }
+                catch(Exception ex){
+                    ex.printStackTrace();
+                    System.out.println("Rollback failed");
+                }
+                outputToClient.writeInt(bcsCommand.STORE_ATTENDANCE_FAILED);
+                outputToClient.flush();
+            
+            }
+        }
         else
         {
             System.out.println("Wrong request");
